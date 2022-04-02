@@ -1,0 +1,53 @@
+from this import d
+from app import db
+#Importing DB variable to make our tables on our storage database
+#To find the Relational Model for storage database, please open the image on CS50-Project-2/templates/storage.jpg
+#We will use the oriented object programming to make our tables, using inheritance to make our classes.
+#db.Model is a SQLAlchemy variable with the default table model. 
+
+class User(db.Model):
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key = True)
+    username = db.Column(db.String, unique = True)
+    password = db.Column(db.String)
+    name = db.Column(db.String)
+    email = db.Column(db.String, unique = True)
+
+#For default, id doesn't go to the init parameter (Flask - SQLAlchemy)
+
+    def __init__(self, username, password, name, email):
+        self.username = username
+        self.password = password
+        self.name = name
+        self.email = email
+    
+    def __repr__(self):
+        return "<User %r>" % self.username
+
+class Post(db.Model):
+    __tablename__ = "posts"
+
+    id = db.Column(db.Integer, primary_key = True)
+    content = db.Column(db.Text)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    user = db.relationship('User', foreign_keys = user_id)
+
+    def __init__(self, content, user_id):
+        self.content = content
+        self.user_id = user_id
+    
+    def __repr__(self):
+        return "<Post %r>" % self.id
+
+class Follow(db.Model):
+    __tablename__ = "follow"
+
+    id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey='users.id')
+    follower_id = db.Column(db.Integer, db.ForeignKey='users.id')
+
+    user = db.relationship('User', foreign_keys = user_id)
+    follower = db.relationship('User', foreign_keys = follower_id)
+
