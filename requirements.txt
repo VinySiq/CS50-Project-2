@@ -1,4 +1,8 @@
-flask
+Flask==1.1.4
 flask_sqlalchemy
 mysql_connector_python
 mysqlclient
+Flask-Script==2.0.6
+Flask-Migrate==2.0.1
+
+#foi necessário realizar downgrade em algumas bibliotecas, pois o flask não está mais sendo muito utilizado.
